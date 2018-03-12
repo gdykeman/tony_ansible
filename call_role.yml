@@ -1,0 +1,10 @@
+---
+- name: playbook to gather facts of routers
+  hosts: all
+  connection: local
+  gather_facts: no
+
+  tasks:
+     - name: include gather_facts role
+       include_role:
+         name: gather_facts

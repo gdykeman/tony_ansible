@@ -1,0 +1,29 @@
+---
+- name: playbook to gather facts of routers
+  hosts: all
+  connection: local
+  gather_facts: no
+
+  ###FILTERS: http://docs.ansible.com/ansible/latest/playbooks_filters.html
+  # - debug:
+  #     msg: "Site 4 Router's Loopback IP is: {{loopback_ip | ipaddr('address')}}"
+
+  tasks:
+    # - name: include azure data set
+    #   include_vars:
+    #     file: <filepath>
+
+    - name: Grab all IOS facts
+      ios_facts:
+        gather_subset: all
+      tags: config
+
+    - name: add net_version to output text file that exists
+      lineinfile:
+        path: ./output
+        line: "{{ansible_net_version}}"
+      tags: extra
+
+    - debug:
+        msg: "{{ansible_net_version}}"
+      tags: config

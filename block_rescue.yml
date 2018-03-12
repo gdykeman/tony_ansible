@@ -1,0 +1,23 @@
+---
+- name: playbook to gather facts of routers
+  hosts: ios
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - block:
+        - include_role:
+            name: network_checkpoint
+
+        - name: run a command
+          ios_command:
+            commands: show ip int br
+
+        # - name: run a failing config
+        #   ios_config:
+        #     lines:
+        #       - router abcd
+
+      rescue:
+        - include_role:
+            name: network_rollback
